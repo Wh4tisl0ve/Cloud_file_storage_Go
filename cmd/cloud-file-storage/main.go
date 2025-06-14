@@ -1,6 +1,9 @@
 package main
 
 import (
+	"log"
+
+	"github.com/Wh4tisl0ve/Cloud_file_storage_Go/internal/app"
 	"github.com/Wh4tisl0ve/Cloud_file_storage_Go/internal/config"
 )
 
@@ -36,5 +39,10 @@ func main() {
 	// -- other --
 	// todo include logger - slog
 
-	config.MustLoad()
+	cfg, err := config.MustLoad()
+	if err != nil {
+		log.Fatalf("Config error: %s", err)
+	}
+
+	app.Run(cfg)
 }

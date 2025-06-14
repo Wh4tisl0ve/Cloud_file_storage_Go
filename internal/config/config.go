@@ -1,32 +1,31 @@
 package config
 
 import (
+	"fmt"
+
+	"github.com/caarlos0/env/v11"
 	"github.com/joho/godotenv"
-	"log"
-	"os"
 )
 
-// todo конфиг для S3
-
 type Config struct {
-	Env           string
+	Env           string `env:"ENV" envDefault:"dev"`
 	Server        HTTPServer
 	DB            DB
-	Сache         Cache
+	Cache         Cache
 	ObjectStorage S3
 }
 
 type HTTPServer struct {
-	Host string
-	Port string
+	Host string `env:"SERVER_HOST,required"`
+	Port string `env:"SERVER_PORT,required"`
 }
 
 type DB struct {
-	Host     string
-	Port     string
-	Name     string
-	Username string
-	Password string
+	Host     string `env:"DB_HOST,required"`
+	Port     string `env:"DB_PORT,required"`
+	Name     string `env:"DB_NAME,required"`
+	Username string `env:"DB_USERNAME,required"`
+	Password string `env:"DB_PASSWORD,required"`
 }
 
 type Cache struct {
@@ -44,40 +43,15 @@ type S3 struct {
 	SecretKey  string
 }
 
-func MustLoad() Config {
-	err := godotenv.Load()
-	if err != nil {
-		log.Fatal("Error loading .env file")
+func MustLoad() (*Config, error) {
+	if err := godotenv.Load(); err != nil {
+		return nil, fmt.Errorf("error load .env file: %w", err)
 	}
 
-	getRequiredParam := func(key string) string {
-		val := os.Getenv(key)
-		if val == "" {
-			log.Fatalf("Required environment variable %s not set", key)
-		}
-		return val
+	cfg := &Config{}
+	if err := env.Parse(cfg); err != nil {
+		return nil, fmt.Errorf("config error: %w", err)
 	}
 
-	server := HTTPServer{
-		Host: getRequiredParam("SERVER_HOST"),
-		Port: getRequiredParam("SERVER_PORT"),
-	}
-
-	db := DB{
-		Host:     getRequiredParam("DB_HOST"),
-		Port:     getRequiredParam("DB_PORT"),
-		Name:     getRequiredParam("DB_NAME"),
-		Username: getRequiredParam("DB_USERNAME"),
-		Password: getRequiredParam("DB_PASSWORD"),
-	}
-
-	config := Config{
-		Env:    os.Getenv("ENV"),
-		Server: server,
-		DB:     db,
-		//Cache: cache,
-		// S3: objectStorage,
-	}
-
-	return config
+	return cfg, nil
 }
