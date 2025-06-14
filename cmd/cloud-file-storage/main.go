@@ -9,8 +9,7 @@ import (
 
 func main() {
 	// -- users --
-	// todo connect to db postgres
-	// todo create db + migrations
+
 	// todo user model
 	// todo auth/register
 	// todo connect to redis
