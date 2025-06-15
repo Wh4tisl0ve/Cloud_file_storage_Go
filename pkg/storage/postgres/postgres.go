@@ -7,11 +7,7 @@ import (
 	_ "github.com/jackc/pgx/v5/stdlib"
 )
 
-type Storage struct {
-	DB *sql.DB
-}
-
-func New(dsn string) (*Storage, error) {
+func New(dsn string) (*sql.DB, error) {
 	db, err := sql.Open("pgx", dsn)
 	if err != nil {
 		return nil, fmt.Errorf("failed create connect to db: %v", err)
@@ -22,13 +18,5 @@ func New(dsn string) (*Storage, error) {
 		return nil, fmt.Errorf("failed ping to db: %v", err)
 	}
 
-	return &Storage{DB: db}, nil
-}
-
-func (s *Storage) Close() error{
-	err := s.DB.Close()
-	if err != nil {
-		return err
-	}
-	return nil
+	return db, nil
 }

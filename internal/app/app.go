@@ -5,7 +5,7 @@ import (
 	"log"
 
 	"github.com/Wh4tisl0ve/Cloud_file_storage_Go/internal/config"
-	"github.com/Wh4tisl0ve/Cloud_file_storage_Go/pkg/storage"
+	"github.com/Wh4tisl0ve/Cloud_file_storage_Go/pkg/storage/postgres"
 )
 
 func Run(cfg *config.Config) {
@@ -15,7 +15,6 @@ func Run(cfg *config.Config) {
 	if err != nil {
 		log.Fatal(err)
 	}
-	
-	defer conn.Close()
 
+	defer conn.Close()
 }

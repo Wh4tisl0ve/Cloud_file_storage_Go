@@ -28,6 +28,7 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	defer m.Close()
 
 	switch cmd {
 	case "up":
