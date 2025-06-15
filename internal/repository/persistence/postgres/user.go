@@ -4,7 +4,7 @@ import (
 	"database/sql"
 	"fmt"
 
-	"github.com/Wh4tisl0ve/Cloud_file_storage_Go/internal/entity"
+	"github.com/Wh4tisl0ve/Cloud_file_storage_Go/internal/domain/entity"
 )
 
 type Repository struct {
