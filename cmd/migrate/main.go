@@ -13,11 +13,11 @@ import (
 )
 
 func main() {
-	config := config.MustLoad()
-	dbConfig := config.Database
+	cfg := config.MustLoad()
+	dbCfg := cfg.Database
 
-	dbConnStr := fmt.Sprintf("postgres://%s:%s@%s:%d/%s?sslmode=disable", dbConfig.Username, dbConfig.Password, dbConfig.Host, dbConfig.Port, dbConfig.Name)
-	m, err := migrate.New("file://migrations", dbConnStr)
+	dsn := fmt.Sprintf("postgres://%s:%s@%s:%d/%s?sslmode=disable", dbCfg.Username, dbCfg.Password, dbCfg.Host, dbCfg.Port, dbCfg.Name)
+	m, err := migrate.New("file://migrations", dsn)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -33,10 +33,14 @@ func main() {
 	case "up":
 		if err := m.Up(); err != nil {
 			log.Fatal("Error up migrations: ", err)
+		} else{
+			log.Println("✅ Migrations up successfully")
 		}
 	case "down":
 		if err := m.Down(); err != nil {
-			log.Fatal("Error down migrations: ",err)
+			log.Fatal("Error down migrations: ", err)
+		} else{
+			log.Println("✅ Migrations down successfully")
 		}
 	default:
 		log.Fatal("Unknown command")

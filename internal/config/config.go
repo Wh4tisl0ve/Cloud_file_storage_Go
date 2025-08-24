@@ -8,6 +8,7 @@ import (
 )
 
 type Config struct {
+	Env string `env:"env"`
 	Server   HTTPServer
 	Database Database
 }

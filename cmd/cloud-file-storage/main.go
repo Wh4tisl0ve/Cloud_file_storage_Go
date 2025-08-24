@@ -1,13 +1,12 @@
 package main
 
 import (
-	"fmt"
-
 	"github.com/Wh4tisl0ve/Cloud_file_storage_Go/internal/config"
+	"github.com/Wh4tisl0ve/Cloud_file_storage_Go/internal/app"
 )
 
 func main() {
-	config := config.MustLoad()
+	cfg := config.MustLoad()
 
-	fmt.Println(config)
+	app.Run(cfg)
 }
