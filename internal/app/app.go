@@ -6,6 +6,7 @@ import (
 	"os"
 
 	"github.com/Wh4tisl0ve/Cloud_file_storage_Go/internal/config"
+	"github.com/Wh4tisl0ve/Cloud_file_storage_Go/internal/repository"
 	"github.com/Wh4tisl0ve/Cloud_file_storage_Go/package/postgres"
 )
 
@@ -24,7 +25,18 @@ func Run(cfg *config.Config) {
 	}
 	defer postgres.Close()
 
-	
+	/* --Repository-- */
+
+	uRepo := repository.User{
+		Conn: postgres.Conn,
+	}
+
+	u, err := uRepo.Find(5)
+	if err != nil {
+		logger.Error(err.Error())
+	}
+	fmt.Print(u)
+
 }
 
 func setupLogger(env string) *slog.Logger {
